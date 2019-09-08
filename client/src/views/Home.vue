@@ -10,7 +10,7 @@
           outlined
           title
         >
-          Welcome Component
+          <VHomeWelcome />
         </v-card>
       </v-col>
       <v-col
@@ -42,9 +42,10 @@
 </template>
 
 <script>
-
+import VHomeWelcome from '@/components/VHomeWelcome.vue'
 export default {
   components: {
+    VHomeWelcome
   }
 }
 </script>
