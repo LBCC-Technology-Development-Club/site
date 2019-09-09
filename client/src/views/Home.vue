@@ -3,7 +3,7 @@
     <v-row>
       <v-col
         cols="12"
-        sm="4"
+        md="4"
       >
         <v-card
           class="pa-2"
@@ -15,26 +15,26 @@
       </v-col>
       <v-col
         cols="12"
-        sm="4"
+        md="4"
       >
         <v-card
           class="pa-2"
           raised
           title
         >
-          Current Project Component
+          <VCurrentProject />
         </v-card>
       </v-col>
       <v-col
         cols="12"
-        sm="4"
+        md="4"
       >
         <v-card
           class="pa-2"
           raised
           title
         >
-          About Team Component
+          <VHomeAbout />
         </v-card>
       </v-col>
     </v-row>
@@ -43,9 +43,14 @@
 
 <script>
 import VHomeWelcome from '@/components/VHomeWelcome.vue'
+import VCurrentProject from '@/components/VCurrentProject.vue'
+import VHomeAbout from '@/components/VHomeAbout.vue'
+
 export default {
   components: {
-    VHomeWelcome
+    VHomeWelcome,
+    VCurrentProject,
+    VHomeAbout
   }
 }
 </script>
