@@ -7,7 +7,7 @@
       <v-img
         class="white--text"
         alt="Image of a mechanical ankle."
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        src="@/assets/img/ankleRender.png"
       >
         <v-card-title
           class="align-end fill-height"
