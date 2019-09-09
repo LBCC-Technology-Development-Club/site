@@ -7,7 +7,7 @@
       >
         <v-card
           class="pa-2"
-          outlined
+          raised
           title
         >
           <VHomeWelcome />
@@ -19,7 +19,7 @@
       >
         <v-card
           class="pa-2"
-          outlined
+          raised
           title
         >
           Current Project Component
@@ -31,7 +31,7 @@
       >
         <v-card
           class="pa-2"
-          outlined
+          raised
           title
         >
           About Team Component
