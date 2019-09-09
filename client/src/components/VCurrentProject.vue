@@ -6,16 +6,27 @@
     >
       <v-img
         class="white--text"
+        alt="Image of a mechanical ankle."
         src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
       >
         <v-card-title
           class="align-end fill-height"
         >Prosthetic Leg</v-card-title>
       </v-img>
-      <v-card-text>A design prototype of the ankle</v-card-text>
+      <v-card-text>A design prototype of the actuating ankle</v-card-text>
     </v-card>
     <br>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error at facere neque dolorem quisquam sint in, expedita est dolore sunt odio hic architecto nesciunt soluta quia voluptate autem ipsum delectus.</p>
+    <p>Our current project is to design a low cost, but highly functional, prosthetic for below the knee amputees. By combining an innovative biomimetic design with advanced electronics, we hope to provide a massive increase in mobility for those in need.</p>
+    <br>
+    <h2>The Brains</h2>
+    <v-img
+      class="white--text"
+      alt="Image of a microcontroller."
+      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+    >
+    </v-img>
+    <br>
+    <p>This is one of our microcontrollers, these are the brains behind the prosthetic. By melding our mechanical design with cutting edge software and electronics, we are able to squeeze the most performance out of the prosthetic.</p>
   </v-container>
 </template>
 
