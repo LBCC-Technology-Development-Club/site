@@ -27,6 +27,15 @@
     </v-img>
     <br>
     <p>This is one of our microcontrollers, these are the brains behind the prosthetic. By melding our mechanical design with cutting edge software and electronics, we are able to squeeze the most performance out of the prosthetic.</p>
+    <hr>
+    <br>
+    <p>For updates on our progress, visit our blog!</p>
+    <v-btn
+      flat
+      text
+      color="primary"
+      to="/blog"
+    >Updates</v-btn>
   </v-container>
 </template>
 
