@@ -6,13 +6,13 @@
   >
       <v-toolbar-title class="hidden-sm-and-down headline text-uppercase">
         <router-link to="/" id="logo">
-          <span class="white-text">LBCC</span>
+          <span class="white-text">TDC</span>
           <span class="white-text font-weight-light"> - Technology Development Club</span>
         </router-link>
       </v-toolbar-title>
       <v-toolbar-title class="hidden-md-and-up headline text-uppercase">
         <router-link to="/" id="logo">
-          <span class="white-text font-weight-light">TDC</span>
+          <span class="white-text">TDC</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
