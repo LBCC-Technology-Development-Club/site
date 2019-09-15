@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <VNavBar />
-    <v-content>
+    <v-content class="no-pad">
       <router-view></router-view>
     </v-content>
   </v-app>
@@ -20,3 +20,9 @@ export default {
   })
 }
 </script>
+
+<style lang="css">
+  .no-pad {
+    padding: 0;
+  }
+</style>

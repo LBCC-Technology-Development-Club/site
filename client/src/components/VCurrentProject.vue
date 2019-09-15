@@ -22,7 +22,7 @@
     <v-img
       class="white--text"
       alt="Image of a microcontroller."
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+      src="@/assets/img/teensy35.jpg"
     >
     </v-img>
     <br>
