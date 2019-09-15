@@ -9,7 +9,6 @@
     <br>
     <p>If you are interested in joining the club, please send our president Srikar Valluri an email!</p>
     <v-btn
-      flat
       text
       color="primary"
       to="/blog"

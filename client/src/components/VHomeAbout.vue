@@ -6,7 +6,6 @@
     <br>
     <p>We are always looking for new members to help us reach the goals set at our founding. Please take a look at our team profile page, and if you see any skills there that you have - reach out!</p>
     <v-btn
-      flat
       text
       color="primary"
       to="/about"

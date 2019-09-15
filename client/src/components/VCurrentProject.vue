@@ -31,7 +31,6 @@
     <br>
     <p>For updates on our progress, visit our blog!</p>
     <v-btn
-      flat
       text
       color="primary"
       to="/blog"
