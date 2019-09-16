@@ -12,7 +12,6 @@
       text
       color="primary"
     ><a id="contact" href="mailto:srikar.valluri.7060@mail.linnbenton.edu">Contact Us</a></v-btn>
-    
   </v-container>
 </template>
 
