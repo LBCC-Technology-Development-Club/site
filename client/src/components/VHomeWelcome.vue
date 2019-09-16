@@ -11,8 +11,8 @@
     <v-btn
       text
       color="primary"
-      to="/blog"
-    >Contact Us</v-btn>
+    ><a id="contact" href="mailto:srikar.valluri.7060@mail.linnbenton.edu">Contact Us</a></v-btn>
+    
   </v-container>
 </template>
 
@@ -21,3 +21,9 @@ export default {
   name: 'HomeWelcome'
 }
 </script>
+
+<style lang="css">
+  #contact {
+    text-decoration: none;
+  }
+</style>
