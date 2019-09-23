@@ -43,13 +43,11 @@ export default {
   data () {
     return {
       members: [
-        { id: 0, name: 'Srikar Valluri', picture: '', headline: 'President', about: 'Srikar is our club President. He is active in all teams, and has significant design influence throughout.', teams: ['software', 'admin', 'mechanical'] },
-        { id: 1, name: 'Nathan Shaw', picture: '/img/nathan.jpg', headline: 'Founder', about: 'Nathan is our founder. Leading the mechanical design he does the majority of our CAD work.', teams: ['admin', 'mechanical'] },
+        { id: 0, name: 'Srikar Valluri', picture: '', headline: 'President', about: 'Hiya! My name is Srikar Valluri, and I'm an Electrical Engineering and Computer Science student at Linn-Benton Community College. I'm the President of the Technology Development Club, and I specialize in writing the Microcontroller Code and designing the Electrical Circuits for our club. I also am very active in contributing to the design, as it has several various mechanical and electrical components, and I also do a lot of Administration work as president of the club.', teams: ['software', 'admin', 'mechanical'] },
+        { id: 1, name: 'Nathan Shaw', picture: '/img/nathan.jpg', headline: 'Founder', about: 'My name is Nathaniel. I founded the club with the goal of bringing something into the world that can help people. I love projects and hard problems. Lead Designer and Club founder.', teams: ['admin', 'mechanical'] },
         { id: 2, name: 'Jonathan Landers', picture: '', headline: 'Active Member', about: 'Jonathan\'s bio.', teams: ['software', 'admin'] },
         { id: 3, name: 'John Warila', picture: 'img/john.jpg', headline: 'Active Member', about: 'John is the primary web-developer - he made this site! - and helps with some of the ECE work for the prosthetic.', teams: ['software', 'admin'] },
-        { id: 4, name: 'Steven Nelson', picture: '', headline: 'Active Member', about: 'Steven\'s bio.', teams: ['software', 'admin'] },
-        { id: 5, name: 'Stephen Oium', picture: '', headline: 'Active Member', about: 'Stephen\'s bio.', teams: ['software', 'admin'] },
-        { id: 6, name: 'Mico Santiago', picture: 'img/mico.jpg', headline: 'Active Member', about: 'Mico is a pre-med student at OSU / LBCC studying Biological Engineering. He focuses on administration and social outreach.', teams: ['admin'] }
+        { id: 6, name: 'Mico Santiago', picture: 'img/mico.jpg', headline: 'Active Member', about: 'My name is Mico Santiago, pre-med student at OSU/LBCC where I am studying Biological Engineering. My responsibilities is administration and social outreach. I was a former pro tennis player and I aspire to save lives as a doctor.', teams: ['admin'] }
       ]
     }
   }
