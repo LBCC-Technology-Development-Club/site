@@ -32,6 +32,35 @@
       color="primary"
       to="/blog"
     >Updates</v-btn>
+    <br>
+    <h2>The future of our designs</h2>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-0.png"
+    >
+    </v-img>
+    <br>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-1.png"
+    >
+    </v-img>
+    <br>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-2.png"
+    >
+    </v-img>
+    <br>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-3.png"
+    >
+    </v-img>
   </v-container>
 </template>
 
