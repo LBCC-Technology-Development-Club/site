@@ -9,11 +9,8 @@
         alt="Image of a mechanical ankle."
         src="@/assets/img/ankleRender.png"
       >
-        <v-card-title
-          class="align-end fill-height"
-        >Prosthetic Leg</v-card-title>
       </v-img>
-      <v-card-text>A design prototype of the actuating ankle</v-card-text>
+      <v-card-text>A design prototype of the prosthetic ankle</v-card-text>
     </v-card>
     <br>
     <p>Our current project is to design a low cost, but highly functional, prosthetic for below the knee amputees. By combining an innovative biomimetic design with advanced electronics, we hope to provide a massive increase in mobility for those in need.</p>
@@ -35,6 +32,35 @@
       color="primary"
       to="/blog"
     >Updates</v-btn>
+    <br>
+    <h2>The future of our designs</h2>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-0.png"
+    >
+    </v-img>
+    <br>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-1.png"
+    >
+    </v-img>
+    <br>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-2.png"
+    >
+    </v-img>
+    <br>
+    <v-img
+      class="white--text"
+      alt="Rendering of an ankle."
+      src="@/assets/img/prototype-design-3.png"
+    >
+    </v-img>
   </v-container>
 </template>
 
