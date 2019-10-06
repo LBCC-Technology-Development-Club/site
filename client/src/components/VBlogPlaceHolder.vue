@@ -3,7 +3,7 @@
     raised
   >
     <v-img
-      src="@/assets/img/logo.png"
+      src="@/assets/img/logo_opt.png"
     ></v-img>
     <v-card-title>TDC Blog - <em>Coming Soon!</em></v-card-title>
     <v-card-text>Sorry, this section of our site is not quite done! Come back soon for weekly updates and blog posts from our members.</v-card-text>

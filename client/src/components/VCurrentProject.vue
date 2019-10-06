@@ -7,7 +7,7 @@
       <v-img
         class="white--text"
         alt="Image of a mechanical ankle."
-        src="@/assets/img/ankleRender.png"
+        src="@/assets/img/ankleRender_opt.png"
       >
       </v-img>
       <v-card-text>A design prototype of the prosthetic ankle</v-card-text>
@@ -19,7 +19,7 @@
     <v-img
       class="white--text"
       alt="Image of a microcontroller."
-      src="@/assets/img/teensy35.jpg"
+      src="@/assets/img/teensy35_opt.jpg"
     >
     </v-img>
     <br>
@@ -37,28 +37,28 @@
     <v-img
       class="white--text"
       alt="Rendering of an ankle."
-      src="@/assets/img/prototype-design-0.png"
+      src="@/assets/img/prototype-design-0_opt.png"
     >
     </v-img>
     <br>
     <v-img
       class="white--text"
       alt="Rendering of an ankle."
-      src="@/assets/img/prototype-design-1.png"
+      src="@/assets/img/prototype-design-1_opt.png"
     >
     </v-img>
     <br>
     <v-img
       class="white--text"
       alt="Rendering of an ankle."
-      src="@/assets/img/prototype-design-2.png"
+      src="@/assets/img/prototype-design-2_opt.png"
     >
     </v-img>
     <br>
     <v-img
       class="white--text"
       alt="Rendering of an ankle."
-      src="@/assets/img/prototype-design-3.png"
+      src="@/assets/img/prototype-design-3_opt.png"
     >
     </v-img>
   </v-container>
