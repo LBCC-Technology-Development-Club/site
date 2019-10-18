@@ -16,7 +16,7 @@
       </v-carousel-item>
     </v-carousel>
     <br>
-    <p>Our current project is to design a low cost, but highly functional, prosthetic for below the knee amputees. By combining an innovative biomimetic design with advanced electronics, we hope to provide a massive increase in mobility for those in need.</p>
+    <p>Our current project is to design a low cost, but highly functional, prosthesis for below the knee amputees. By combining an innovative biomimetic design with advanced electronics, we hope to provide a massive increase in mobility for those in need.</p>
     <br>
     <h3>For updates on our progress, visit our blog!</h3>
     <v-row
