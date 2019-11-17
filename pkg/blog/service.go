@@ -25,3 +25,13 @@ type Service struct {
 func (s Service) GetPosts() ([]*core.Post, error) {
 	return s.blog.FindAllPosts()
 }
+
+// CreatePost creates a new post
+func (s Service) CreatePost(rawPost RawPost) (*core.Post, error) {
+	post := s.rawPostToPost(rawPost)
+	err := s.blog.CreatePost(post)
+	if err != nil {
+		return nil, err
+	}
+	return post, nil
+}
