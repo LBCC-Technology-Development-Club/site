@@ -20,3 +20,8 @@ type Service struct {
 	userID string
 	blog   core.Blog
 }
+
+// GetPosts returns all posts
+func (s Service) GetPosts() ([]*core.Post, error) {
+	return s.blog.FindAllPosts()
+}
