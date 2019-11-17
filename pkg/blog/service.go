@@ -14,3 +14,9 @@ type RawPost struct {
 	Body    string `json:"body"`
 	// Add timestamp here
 }
+
+// Service stores current user ID and blog
+type Service struct {
+	userID string
+	blog   core.Blog
+}
