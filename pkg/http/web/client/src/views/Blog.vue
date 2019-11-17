@@ -3,18 +3,19 @@
     <v-row>
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
       </v-col>
       <v-col
         cols="12"
-        md="8"
+        md="6"
       >
-        <VBlogPlaceHolder />
+        <h1>TDC Blog</h1>
+        <VFeed />
       </v-col>
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
       </v-col>
     </v-row>
@@ -22,11 +23,11 @@
 </template>
 
 <script>
-import VBlogPlaceHolder from '@/components/VBlogPlaceHolder.vue'
+import VFeed from '@/components/VFeed.vue'
 
 export default {
   components: {
-    VBlogPlaceHolder
+    VFeed
   }
 }
 </script>
