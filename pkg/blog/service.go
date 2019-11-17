@@ -35,3 +35,15 @@ func (s Service) CreatePost(rawPost RawPost) (*core.Post, error) {
 	}
 	return post, nil
 }
+
+// rawPostToPost translates rawposts to posts
+func (s Service) rawPostToPost(rawPost RawPost) *core.Post {
+	return &core.Post{
+		UserID:  s.userID,
+		PostID:  strconv.Itoa(int(rawPost.PostID)),
+		Title:   rawPost.Title,
+		Summary: rawPost.Summary,
+		Body:    rawPost.Body,
+		// Add timestamp here
+	}
+}
