@@ -47,3 +47,11 @@ func (s Service) rawPostToPost(rawPost RawPost) *core.Post {
 		// Add timestamp here
 	}
 }
+
+// NewService provides a new service
+func NewService(blog core.Blog, userID string) Service {
+	return Service{
+		blog:   blog,
+		userID: userID,
+	}
+}
