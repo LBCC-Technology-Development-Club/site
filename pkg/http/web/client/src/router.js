@@ -26,12 +26,12 @@ export default new Router({
       component: Blog
     },
     {
-      path: '/post/:id',
+      path: '/blog/post/:id',
       name: 'post',
       component: Post
     },
     {
-      path: '/create-post',
+      path: '/blog/create-post',
       name: 'create-post',
       component: CreatePost
     }
