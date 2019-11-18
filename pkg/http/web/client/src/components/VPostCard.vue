@@ -3,10 +3,15 @@
   <v-card>
     <v-card-title>{{ title }}</v-card-title>
     <v-card-text>
-      <div>by {{ author }}</div>
+      <div>by {{ author }}, {{ timestamp }}</div>
       <br>
       <div class="text--primary">{{ summary }}</div>
     </v-card-text>
+    <v-btn
+      text
+      color="primary"
+      :to="{ name: 'post', params: { id: pid }}"
+    >Read</v-btn>
   </v-card>
 </div>
 </template>
@@ -15,7 +20,7 @@
 
 export default {
   name: 'VPostCard',
-  props: ['title', 'author', 'summary']
+  props: ['pid', 'title', 'author', 'timestamp', 'summary']
 }
 </script>
 
