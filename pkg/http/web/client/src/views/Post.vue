@@ -62,7 +62,7 @@ export default {
             {
               commenter: 'Srikar Valluri',
               body: 'Cool!',
-              timestamp: '5:56pm Nov 19',
+              timestamp: '6:30pm Nov 19',
               commentID: 1
             }
           ]
@@ -84,7 +84,7 @@ export default {
             {
               commenter: 'Srikar Valluri',
               body: 'Cool!',
-              timestamp: '5:56pm Nov 19',
+              timestamp: '6:30pm Nov 19',
               commentID: 3
             }
           ]
