@@ -50,7 +50,8 @@ export default {
       menu: [
         { title: 'Home', link: '/' },
         { title: 'About', link: '/about' },
-        { title: 'Blog', link: '/blog' }
+        { title: 'Blog', link: '/blog' },
+        { title: 'New Post', link: '/blog/create-post' }
       ]
     }
   }
