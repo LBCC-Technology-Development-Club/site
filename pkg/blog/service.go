@@ -8,11 +8,11 @@ import (
 
 // RawPost describes the structure of raw posts that we get from the client
 type RawPost struct {
-	PostID  int64  `json:"pid"`
-	Title   string `json:"title"`
-	Summary string `json:"summary"`
-	Body    string `json:"body"`
-	// Add timestamp here
+	PostID    int64  `json:"pid"`
+	Title     string `json:"title"`
+	Summary   string `json:"summary"`
+	Body      string `json:"body"`
+	Timestamp string `json:"timestamp"`
 }
 
 // Service stores current user ID and blog
@@ -39,12 +39,12 @@ func (s Service) CreatePost(rawPost RawPost) (*core.Post, error) {
 // rawPostToPost translates rawposts to posts
 func (s Service) rawPostToPost(rawPost RawPost) *core.Post {
 	return &core.Post{
-		UserID:  s.userID,
-		PostID:  strconv.Itoa(int(rawPost.PostID)),
-		Title:   rawPost.Title,
-		Summary: rawPost.Summary,
-		Body:    rawPost.Body,
-		// Add timestamp here
+		UserID:    s.userID,
+		PostID:    strconv.Itoa(int(rawPost.PostID)),
+		Title:     rawPost.Title,
+		Summary:   rawPost.Summary,
+		Body:      rawPost.Body,
+		Timestamp: rawPost.Timestamp,
 	}
 }
 
