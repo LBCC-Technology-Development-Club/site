@@ -4,7 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/LBCC-Technology-Development-Club/site/db"
+	"github.com/LBCC-Technology-Development-Club/site/blog"
+	"github.com/LBCC-Technology-Development-Club/site/uAuth"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
@@ -12,6 +13,7 @@ import (
 
 func Routes() *chi.Mux {
 	router := chi.NewRouter()
+	
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
 		middleware.Logger,
@@ -20,8 +22,14 @@ func Routes() *chi.Mux {
 		middleware.Recoverer,
 	)
 
+	// Blog endpoints
 	router.Route("/", func(r chi.Router) {
-		r.Mount("/api/blog", db.Routes())
+		r.Mount("/api/blog", blog.Routes())
+	})
+
+	// Login endpoints
+	router.Route("/", func(r chi.Router) {
+		r.Mount("/api/login", uAuth.Routes())
 	})
 
 	return router

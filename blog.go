@@ -1,63 +1,10 @@
-package db
+package blog
 
 import (
-	"database/sql"
-	"fmt"
-	"os"
-
-	"github.com/LBCC-Technology-Development-Club/site/post"
 	"github.com/go-chi/chi"
-	"github.com/go-sql-driver/mysql"
+	"github.com/LBCC-Technology-Development-Club/site/database"
 )
 
-func Connect() *sql.DB {
-	config := mysql.NewConfig()
-
-	config.User = os.Getenv("DBUSER")
-	config.Passwd = os.Getenv("DBPASSWORD")
-	config.Net = "tcp"
-	config.Addr = os.Getenv("DBADDR")
-	config.DBName = "cs340"
-
-	dsn := config.FormatDSN()
-
-	fmt.Printf("%s\n", dsn)
-
-	db, err := sql.Open("mysql", dsn)
-
-	if err != nil {
-		panic(err.Error())
-	}
-	return db
-}
-
-// AllPosts gets all posts from db
-func AllPosts() []post.Post {
-	db := connect()
-	selDB, err := db.Query("SELECT * FROM Post")
-	if err != nil {
-		panic(err.Error())
-	}
-	post := post.Post{}
-	res := []post.Post{}
-	for selDB.Next() {
-		var uID, pID int
-		var title, summary, body, timestamp string
-		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID)
-		if err != nil {
-			panic(err.Error())
-		}
-		post.UserID = uID
-		post.PostID = pID
-		post.Title = title
-		post.Summary = summary
-		post.Body = body
-		post.Timestamp = timestamp
-		res = append(res, post)
-	}
-
-	return res
-}
 
 func Routes() *chi.Mux {
 	router := chi.NewRouter()
@@ -67,13 +14,11 @@ func Routes() *chi.Mux {
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post/", CreatePost)
 
-	router.Post("/login/", Login)
-
 	return router
 }
 
 func GetPost(w http.ResponseWriter, r *http.Request) {
-	db := Connect()
+	db := database.Connect()
 
 	pID := chi.URLParam(r, "pID")
 
@@ -102,7 +47,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
-	db := connect()
+	db := database.Connect()
 
 	selDB, err := db.Query("SELECT * FROM Post"); err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
@@ -131,7 +76,7 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePost(w http.ResponseWriter, r *http.Request) {
-	db := connect()
+	db := database.Connect()
 
 	pID := chi.URLParam(r, "pID")
 	response := make(map[string]string)
@@ -147,7 +92,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreatePost(w http.ResponseWriter, r *http.Request) {
-	db := connect()
+	db := database.Connect()
 
 	response := make(map[string]string)
 
