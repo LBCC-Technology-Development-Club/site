@@ -13,6 +13,11 @@ func Routes() *chi.Mux {
 	router.Get("/post/", GetAllPosts)
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post/", CreatePost)
+	router.Update("/post/{pID}", UpdatePost)
+
+	router.Get("/comment/{pID}", GetPostComments)
+	router.Post("/comment/{pID}", CreateComment)
+	router.Delete("/comment/{cID}", DeleteComment)
 
 	return router
 }
