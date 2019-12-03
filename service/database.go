@@ -1,15 +1,13 @@
-package database
+package service
 
 import (
 	"database/sql"
-	"fmt"
 	"os"
 
-	"github.com/LBCC-Technology-Development-Club/site/post"
-	"github.com/go-chi/chi"
 	"github.com/go-sql-driver/mysql"
 )
 
+// Connect opens a connection to the database
 func Connect() *sql.DB {
 	config := mysql.NewConfig()
 

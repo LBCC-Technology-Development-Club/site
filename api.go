@@ -4,16 +4,16 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/LBCC-Technology-Development-Club/site/blog"
-	"github.com/LBCC-Technology-Development-Club/site/uAuth"
+	"github.com/LBCC-Technology-Development-Club/site/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 )
 
+// Routes defines all routes/endpoints for the API. Split into /blog and /login
 func Routes() *chi.Mux {
 	router := chi.NewRouter()
-	
+
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
 		middleware.Logger,
@@ -23,13 +23,13 @@ func Routes() *chi.Mux {
 	)
 
 	// Blog endpoints
-	router.Route("/", func(r chi.Router) {
-		r.Mount("/api/blog", blog.Routes())
+	router.Route("/blog", func(r chi.Router) {
+		r.Mount("/", service.BlogRoutes())
 	})
 
 	// Login endpoints
-	router.Route("/", func(r chi.Router) {
-		r.Mount("/api/login", uAuth.Routes())
+	router.Route("/login", func(r chi.Router) {
+		r.Mount("/", service.LoginRoutes())
 	})
 
 	return router

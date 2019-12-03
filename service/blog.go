@@ -1,44 +1,49 @@
-package blog
+package service
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/go-chi/chi"
-	"github.com/LBCC-Technology-Development-Club/site/database"
+	"github.com/go-chi/render"
 )
 
-
-func Routes() *chi.Mux {
+// BlogRoutes defines the API endpoints for the /blog
+func BlogRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Get("/post/{pID}", GetPost)
-	router.Get("/post/", GetAllPosts)
+	router.Get("/post", GetAllPosts)
 	router.Delete("/post/{pID}", DeletePost)
-	router.Post("/post/", CreatePost)
-	router.Update("/post/{pID}", UpdatePost)
+	router.Post("/post", CreatePost)
+	//router.Put("/post/{pID}", UpdatePost)
 
 	router.Get("/comment/{pID}", GetPostComments)
-	router.Post("/comment/{pID}", CreateComment)
-	router.Delete("/comment/{cID}", DeleteComment)
+	//router.Post("/comment/{pID}", CreateComment)
+	//router.Delete("/comment/{cID}", DeleteComment)
 
 	return router
 }
 
+// GetPost gets a specific post from the database
 func GetPost(w http.ResponseWriter, r *http.Request) {
-	db := database.Connect()
+	db := Connect()
 
 	pID := chi.URLParam(r, "pID")
 
-	selDB, err := db.Query("SELECT * FROM Post WHERE pID = " + pID); err != nil {
-		panic(err.Error())
+	selDB, err := db.Query("SELECT * FROM Post WHERE pID = " + pID)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
 	}
 
-	post := post.Post{}
+	post := Post{}
 
 	for selDB.Next() {
 		var uID, pID int
 		var title, summary, body, timestamp string
 		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID)
 		if err != nil {
-			panic(err.Error())
+			log.Panicf("Logging error: %s\n", err.Error())
 		}
 		post.UserID = uID
 		post.PostID = pID
@@ -51,15 +56,17 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, post)
 }
 
+// GetAllPosts gets all the posts from the database
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
-	db := database.Connect()
+	db := Connect()
 
-	selDB, err := db.Query("SELECT * FROM Post"); err != nil {
+	selDB, err := db.Query("SELECT * FROM Post")
+	if err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
 
-	post := post.Post{}
-	res := []post.Post{}
+	post := Post{}
+	res := []Post{}
 
 	for selDB.Next() {
 		var uID, pID int
@@ -80,26 +87,38 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, res)
 }
 
+// GetPostComments gets all the comments for a post
+func GetPostComments(w http.ResponseWriter, r *http.Request) {
+
+}
+
+/*
+Below this line requires user authentication
+*/
+
+// DeletePost deletes a specific post from the database
 func DeletePost(w http.ResponseWriter, r *http.Request) {
-	db := database.Connect()
+	db := Connect()
 
 	pID := chi.URLParam(r, "pID")
 	response := make(map[string]string)
 
-	selDB, err := db.Query("DELETE FROM Post WHERE pID = " + pID); err != {
+	_, err := db.Query("DELETE FROM Post WHERE pID = " + pID)
+	if err != nil {
 		response["message"] = "Failed to delete post"
 		log.Panicf("Logging error: %s\n", err.Error())
 	} else {
 		response["message"] = "Deleted post successfully"
 	}
-	
+
 	render.JSON(w, r, response)
 }
 
+// CreatePost makes a new post
 func CreatePost(w http.ResponseWriter, r *http.Request) {
-	db := database.Connect()
+	//db := Connect()
 
-	response := make(map[string]string)
+	//response := make(map[string]string)
 
-	selDB, err := db.Query("INSERT")
+	//selDB, err := db.Query("INSERT")
 }

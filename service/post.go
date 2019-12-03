@@ -1,4 +1,4 @@
-package post
+package service
 
 // Post represents a blog post
 type Post struct {
