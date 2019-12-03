@@ -18,7 +18,7 @@ func Connect() *sql.DB {
 	config.Passwd = os.Getenv("DBPASSWORD")
 	config.Net = "tcp"
 	config.Addr = os.Getenv("DBADDR")
-	config.DBName = "cs340"
+	config.DBName = os.Getenv("DBNAME")
 
 	dsn := config.FormatDSN()
 
@@ -27,6 +27,6 @@ func Connect() *sql.DB {
 	if err != nil {
 		panic(err.Error())
 	}
-	
+
 	return db
 }
