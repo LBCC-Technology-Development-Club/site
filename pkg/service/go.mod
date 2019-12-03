@@ -1,4 +1,4 @@
-module github.com/LBCC-Technology-Development-Club/site/service
+module github.com/LBCC-Technology-Development-Club/site/pkg/service
 
 go 1.13
 

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/LBCC-Technology-Development-Club/site/service"
+	"github.com/LBCC-Technology-Development-Club/site/pkg/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
