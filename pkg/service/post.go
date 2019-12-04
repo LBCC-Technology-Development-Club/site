@@ -4,6 +4,7 @@ package service
 type Post struct {
 	UserID    int    `json:"user_id"`
 	PostID    int    `json:"post_id"`
+	Author    string `json:"author"`
 	Title     string `json:"title"`
 	Summary   string `json:"summary"`
 	Body      string `json:"body"`

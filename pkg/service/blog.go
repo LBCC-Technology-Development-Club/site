@@ -13,6 +13,7 @@ func BlogRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Get("/post/{pID}", GetPost)
+	//router.Get("/post/user/{uID}", GetUserPosts)
 	router.Get("/post", GetAllPosts)
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post", CreatePost)
@@ -40,13 +41,14 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 
 	for selDB.Next() {
 		var uID, pID int
-		var title, summary, body, timestamp string
-		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID)
+		var title, summary, body, timestamp, author string
+		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID, &author)
 		if err != nil {
 			log.Panicf("Logging error: %s\n", err.Error())
 		}
 		post.UserID = uID
 		post.PostID = pID
+		post.Author = author
 		post.Title = title
 		post.Summary = summary
 		post.Body = body
@@ -70,13 +72,14 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 
 	for selDB.Next() {
 		var uID, pID int
-		var title, summary, body, timestamp string
-		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID)
+		var title, summary, body, timestamp, author string
+		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID, &author)
 		if err != nil {
 			log.Panicf("Logging error: %s\n", err.Error())
 		}
 		post.UserID = uID
 		post.PostID = pID
+		post.Author = author
 		post.Title = title
 		post.Summary = summary
 		post.Body = body
