@@ -32,7 +32,9 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 
 	pID := chi.URLParam(r, "pID")
 
-	selDB, err := db.Query("SELECT * FROM Post WHERE pID = " + pID)
+	query := "SELECT Post.*, User.Name FROM Post, User WHERE Post.pID = " + pID + " AND Post.uID = User.uID"
+
+	selDB, err := db.Query(query)
 	if err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
@@ -55,6 +57,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		post.Timestamp = timestamp
 	}
 
+	db.Close()
 	render.JSON(w, r, post)
 }
 
@@ -87,12 +90,46 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 		res = append(res, post)
 	}
 
+	db.Close()
 	render.JSON(w, r, res)
 }
 
 // GetPostComments gets all the comments for a post
 func GetPostComments(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
 
+	pID := chi.URLParam(r, "pID")
+
+	query := "SELECT Comment.*, User.Name FROM Comment, User WHERE Comment.pID = " + pID + " AND Comment.uID = User.uID"
+
+	selDB, err := db.Query(query)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	comment := Comment{}
+	res := []Comment{}
+
+	for selDB.Next() {
+		var uID, pID, cID int
+		var timestamp, content, author string
+		err = selDB.Scan(&cID, &timestamp, &content, &uID, &pID, &author)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+
+		comment.CommentID = cID
+		comment.Timestamp = timestamp
+		comment.Content = content
+		comment.UserID = uID
+		comment.PostID = pID
+		comment.Author = author
+
+		res = append(res, comment)
+	}
+
+	db.Close()
+	render.JSON(w, r, res)
 }
 
 /*
@@ -114,6 +151,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 		response["message"] = "Deleted post successfully"
 	}
 
+	db.Close()
 	render.JSON(w, r, response)
 }
 

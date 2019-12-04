@@ -11,8 +11,9 @@ const APIClient = {
     let postData = await this.perform('get', `/blog/post/${pID}`)
     return postData
   },
-  getComments (pID) {
-    return this.perform('get', `/blog/comments/${pID}`)
+  async getComments (pID) {
+    let commentsData = await this.perform('get', `/blog/comment/${pID}`)
+    return commentsData
   },
 
   async perform (method, resource, data) {

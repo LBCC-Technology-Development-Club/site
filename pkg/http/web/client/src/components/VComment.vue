@@ -3,7 +3,7 @@
   <v-card
     outlined
   >
-    <v-card-text>{{ commenter }}, {{ timestamp }} <br> <span class="text--primary">{{ body }}</span></v-card-text>
+    <v-card-text>{{ commenter }}, at {{ timestamp }} <br> <span class="text--primary">{{ body }}</span></v-card-text>
   </v-card>
 </div>
 </template>

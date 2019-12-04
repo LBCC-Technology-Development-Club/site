@@ -46,7 +46,7 @@ export default {
   },
   data () {
     return {
-      comments: [],
+      comments: {},
       currentPost: {}
     }
   },
@@ -59,7 +59,9 @@ export default {
       APIClient.getPost(this.$route.params.id).then((responseJSON) => {
         this.currentPost = responseJSON
       })
-      // this.comments = APIClient.getComments(this.$route.params.id)
+      APIClient.getComments(this.$route.params.id).then(responseJSON => {
+        this.comments = responseJSON
+      })
     }
   }
 }

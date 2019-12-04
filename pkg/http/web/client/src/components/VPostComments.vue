@@ -4,10 +4,10 @@
   <VCommentInput />
   <VComment
     v-for="comment in comments"
-    v-bind:key="comment.commentID"
-    v-bind:commenter="comment.commenter"
+    v-bind:key="comment.comment_id"
+    v-bind:commenter="comment.author"
     v-bind:timestamp="comment.timestamp"
-    v-bind:body="comment.body"
+    v-bind:body="comment.content"
   >
   </VComment>
 </div>
