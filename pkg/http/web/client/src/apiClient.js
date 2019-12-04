@@ -19,6 +19,14 @@ const APIClient = {
     let postsData = await this.perform('get', `/blog/post`)
     return postsData
   },
+  async getUser (uID) {
+    let userData = await this.perform('get', `/blog/user/${uID}`)
+    return userData
+  },
+  async getUserPosts (uID) {
+    let postsData = await this.perform('get', `/blog/user/${uID}/posts`)
+    return postsData
+  },
 
   async perform (method, resource, data) {
     // Get access token here

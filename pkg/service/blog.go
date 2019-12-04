@@ -23,6 +23,9 @@ func BlogRoutes() *chi.Mux {
 	//router.Post("/comment/{pID}", CreateComment)
 	//router.Delete("/comment/{cID}", DeleteComment)
 
+	router.Get("/user/{uID}", GetUser)
+	router.Get("/user/{uID}/posts", GetUserPosts)
+
 	return router
 }
 
@@ -126,6 +129,73 @@ func GetPostComments(w http.ResponseWriter, r *http.Request) {
 		comment.Author = author
 
 		res = append(res, comment)
+	}
+
+	db.Close()
+	render.JSON(w, r, res)
+}
+
+// GetUser returns the user data
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	uID := chi.URLParam(r, "uID")
+
+	user := User{}
+
+	query := "SELECT isAdmin, Name, role FROM User WHERE uID = " + uID
+
+	selDB, err := db.Query(query)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	for selDB.Next() {
+		var isAdmin bool
+		var Name, role string
+		err = selDB.Scan(&isAdmin, &Name, &role)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+
+		user.IsAdmin = isAdmin
+		user.Name = Name
+		user.role = role
+	}
+
+	db.Close()
+	render.JSON(w, r, user)
+}
+
+// GetUserPosts finds the posts for a specific user
+func GetUserPosts(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	uID := chi.URLParam(r, "uID")
+
+	selDB, err := db.Query("SELECT DISTINCT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID AND Post.uID = " + uID)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	post := Post{}
+	res := []Post{}
+
+	for selDB.Next() {
+		var uID, pID int
+		var title, summary, body, timestamp, author string
+		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID, &author)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+		post.UserID = uID
+		post.PostID = pID
+		post.Author = author
+		post.Title = title
+		post.Summary = summary
+		post.Body = body
+		post.Timestamp = timestamp
+		res = append(res, post)
 	}
 
 	db.Close()

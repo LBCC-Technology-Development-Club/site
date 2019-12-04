@@ -10,9 +10,9 @@
         cols="12"
         md="6"
       >
-        <h1>{{ users[this.$route.params.id] }}'s Posts</h1>
+        <h1>{{ user.Name }}'s Posts</h1>
         <VUserFeed
-          v-bind:user="users[this.$route.params.id]"
+          v-bind:user="user"
         />
       </v-col>
       <v-col
@@ -26,6 +26,7 @@
 
 <script>
 import VUserFeed from '@/components/VUserFeed.vue'
+import APIClient from '@/apiClient'
 
 export default {
   components: {
@@ -33,7 +34,17 @@ export default {
   },
   data () {
     return {
-      users: ["John Warila", "Srikar Valluri"]
+      user: {}
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      APIClient.getUser(this.$route.params.id).then(responseJSON => {
+        this.user = responseJSON
+      })
     }
   }
 }
