@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     fetchData () {
-      console.log()
       APIClient.getPost(this.$route.params.id).then((responseJSON) => {
         this.currentPost = responseJSON
       })
