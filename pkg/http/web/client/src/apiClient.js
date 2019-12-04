@@ -15,6 +15,10 @@ const APIClient = {
     let commentsData = await this.perform('get', `/blog/comment/${pID}`)
     return commentsData
   },
+  async getAllPosts () {
+    let postsData = await this.perform('get', `/blog/post`)
+    return postsData
+  },
 
   async perform (method, resource, data) {
     // Get access token here

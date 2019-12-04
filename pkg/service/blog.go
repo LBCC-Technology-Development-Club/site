@@ -65,7 +65,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
-	selDB, err := db.Query("SELECT * FROM Post")
+	selDB, err := db.Query("SELECT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID")
 	if err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
