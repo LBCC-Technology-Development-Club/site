@@ -1,7 +1,7 @@
 <template>
 <div id="post-title">
   <h1>{{ title }}</h1>
-  <p>by {{ author }}</p>
+  <p>by {{ author }}, at {{ timestamp }}</p>
 </div>
 </template>
 
@@ -9,7 +9,7 @@
 
 export default {
   name: 'VPostTitle',
-  props: ['title', 'author']
+  props: ['title', 'author', 'timestamp']
 }
 </script>
 
