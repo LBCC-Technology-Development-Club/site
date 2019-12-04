@@ -8,11 +8,23 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
+	"github.com/rs/cors"
 )
 
 // Routes defines all routes/endpoints for the API. Split into /blog and /login
 func Routes() *chi.Mux {
 	router := chi.NewRouter()
+
+	cors := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	})
+
+	router.Use(cors.Handler)
 
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
@@ -46,5 +58,5 @@ func main() {
 		log.Panicf("Logging err: %s\n", err.Error())
 	}
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":9090", router))
 }
