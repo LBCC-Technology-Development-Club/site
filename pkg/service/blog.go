@@ -160,7 +160,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 		user.IsAdmin = isAdmin
 		user.Name = Name
-		user.role = role
+		user.Role = role
 	}
 
 	db.Close()
