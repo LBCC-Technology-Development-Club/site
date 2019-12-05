@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URI = 'http://lbcctechdevclub.org'
+const BASE_URI = 'https://lbcctechdevclub.org'
 const client = axios.create({
   baseURL: BASE_URI,
   jason: true
