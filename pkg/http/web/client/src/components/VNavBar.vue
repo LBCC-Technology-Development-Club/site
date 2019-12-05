@@ -51,6 +51,7 @@ export default {
         { title: 'Home', link: '/' },
         { title: 'About', link: '/about' },
         { title: 'Blog', link: '/blog' },
+        { title: 'Login', link: '/blog/login' },
         { title: 'New Post', link: '/blog/create-post' }
       ]
     }
