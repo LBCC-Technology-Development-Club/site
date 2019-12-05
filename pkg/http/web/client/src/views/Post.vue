@@ -19,9 +19,7 @@
         <VPostContent
           v-bind:body="currentPost.body"
         />
-        <VPostComments
-          v-bind:comments="comments"
-        />
+        <VPostComments/>
       </v-col>
       <v-col
         cols="12"
@@ -46,7 +44,6 @@ export default {
   },
   data () {
     return {
-      comments: {},
       currentPost: {}
     }
   },
@@ -57,9 +54,6 @@ export default {
     fetchData () {
       APIClient.getPost(this.$route.params.id).then(responseJSON => {
         this.currentPost = responseJSON
-      })
-      APIClient.getComments(this.$route.params.id).then(responseJSON => {
-        this.comments = responseJSON
       })
     }
   }

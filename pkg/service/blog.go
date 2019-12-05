@@ -1,8 +1,10 @@
 package service
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
@@ -20,8 +22,8 @@ func BlogRoutes() *chi.Mux {
 	//router.Put("/post/{pID}", UpdatePost)
 
 	router.Get("/comment/{pID}", GetPostComments)
-	//router.Post("/comment/{pID}", CreateComment)
-	//router.Delete("/comment/{cID}", DeleteComment)
+	router.Post("/comment/{pID}", CreateComment)
+	router.Delete("/comment/{cID}", DeleteComment)
 
 	router.Get("/user/{uID}", GetUser)
 	router.Get("/user/{uID}/posts", GetUserPosts)
@@ -68,7 +70,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
-	selDB, err := db.Query("SELECT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID")
+	selDB, err := db.Query("SELECT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID ORDER BY Post.pID DESC")
 	if err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
@@ -225,11 +227,79 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, response)
 }
 
+// DeleteComment deletes a specific post from the database
+func DeleteComment(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	cID := chi.URLParam(r, "cID")
+	response := make(map[string]string)
+
+	_, err := db.Query("DELETE FROM Comment WHERE cID = " + cID)
+	if err != nil {
+		response["message"] = "Failed to delete comment"
+		log.Panicf("Logging error: %s\n", err.Error())
+	} else {
+		response["message"] = "Deleted comment successfully"
+	}
+
+	db.Close()
+	render.JSON(w, r, response)
+}
+
 // CreatePost makes a new post
 func CreatePost(w http.ResponseWriter, r *http.Request) {
-	//db := Connect()
+	db := Connect()
 
-	//response := make(map[string]string)
+	post := Post{}
+	err := json.NewDecoder(r.Body).Decode(&post)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
 
-	//selDB, err := db.Query("INSERT")
+	post.Timestamp = time.Now().String()
+
+	query := `INSERT INTO Post(pID, timestamp, title, summary, body, uID) VALUES (NULL, "` + string(post.Timestamp) + `", "` + post.Title + `", "` + post.Summary + `", "` + post.Body + `", "` + string(post.UserID) + `")`
+
+	response := make(map[string]string)
+
+	_, err = db.Query(query)
+	if err != nil {
+		response["message"] = "Failed to create post"
+		log.Panicf("Logging error: %s\n", err.Error())
+	} else {
+		response["message"] = "Created post successfully"
+	}
+
+	db.Close()
+	render.JSON(w, r, response)
+}
+
+// CreateComment makes a new post
+func CreateComment(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	pID := chi.URLParam(r, "pID")
+
+	comment := Comment{}
+	err := json.NewDecoder(r.Body).Decode(&comment)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	comment.Timestamp = time.Now().String()
+
+	query := `INSERT INTO Comment(cID, timestamp, content, uID, pID) VALUES (NULL, "` + string(comment.Timestamp) + `", "` + comment.Content + `", "` + string(comment.UserID) + `", "` + pID + `")`
+	log.Printf("%s\n", query)
+	response := make(map[string]string)
+
+	_, err = db.Query(query)
+	if err != nil {
+		response["message"] = "Failed to create comment"
+		log.Panicf("Logging error: %s\n", err.Error())
+	} else {
+		response["message"] = "Created comment successfully"
+	}
+
+	db.Close()
+	render.JSON(w, r, response)
 }
