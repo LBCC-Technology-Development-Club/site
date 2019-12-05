@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URI = 'http://localhost:9090'
+const BASE_URI = 'http://lbcctechdevclub.org'
 const client = axios.create({
   baseURL: BASE_URI,
   jason: true
@@ -8,23 +8,23 @@ const client = axios.create({
 
 const APIClient = {
   async getPost (pID) {
-    let postData = await this.perform('get', `/blog/post/${pID}`)
+    const postData = await this.perform('get', `/blog/post/${pID}`)
     return postData
   },
   async getComments (pID) {
-    let commentsData = await this.perform('get', `/blog/comment/${pID}`)
+    const commentsData = await this.perform('get', `/blog/comment/${pID}`)
     return commentsData
   },
   async getAllPosts () {
-    let postsData = await this.perform('get', `/blog/post`)
+    const postsData = await this.perform('get', `/blog/post`)
     return postsData
   },
   async getUser (uID) {
-    let userData = await this.perform('get', `/blog/user/${uID}`)
+    const userData = await this.perform('get', `/blog/user/${uID}`)
     return userData
   },
   async getUserPosts (uID) {
-    let postsData = await this.perform('get', `/blog/user/${uID}/posts`)
+    const postsData = await this.perform('get', `/blog/user/${uID}/posts`)
     return postsData
   },
 

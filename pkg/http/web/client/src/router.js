@@ -6,6 +6,8 @@ import Blog from './views/Blog.vue'
 import Post from './views/Post.vue'
 import CreatePost from './views/CreatePost.vue'
 import User from './views/User.vue'
+import SignUp from './views/SignUp.vue'
+import LogIn from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -41,6 +43,16 @@ export default new Router({
       path: '/blog/user/:id',
       name: 'user',
       component: User
+    },
+    {
+      path: '/blog/signup',
+      name: 'signup',
+      component: SignUp
+    },
+    {
+      path: '/blog/login',
+      name: 'login',
+      component: LogIn
     }
   ]
 })

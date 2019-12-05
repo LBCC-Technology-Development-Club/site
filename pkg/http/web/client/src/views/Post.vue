@@ -50,12 +50,12 @@ export default {
       currentPost: {}
     }
   },
-  created () {
+  mounted () {
     this.fetchData()
   },
   methods: {
     fetchData () {
-      APIClient.getPost(this.$route.params.id).then((responseJSON) => {
+      APIClient.getPost(this.$route.params.id).then(responseJSON => {
         this.currentPost = responseJSON
       })
       APIClient.getComments(this.$route.params.id).then(responseJSON => {
