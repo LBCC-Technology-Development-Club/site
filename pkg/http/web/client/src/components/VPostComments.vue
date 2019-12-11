@@ -4,7 +4,7 @@
   <div id="post-title">
     <v-row>
       <v-col cols="12" sm="8">
-        <v-text-field label="Comment" single-line v-model="content"></v-text-field>
+        <v-text-field label="Comment" single-line clearable v-model="content"></v-text-field>
       </v-col>
       <v-col cols="12" sm="4">
         <v-btn color="primary" text @click.prevent="getFormValues()">submit</v-btn>
@@ -39,9 +39,9 @@ export default {
         uID: 0,
         pID: 0,
         content: '',
-        timestamp: '',
+        timestamp: ''
       },
-      content: '',
+      content: ''
     }
   },
   mounted () {
@@ -59,8 +59,7 @@ export default {
 
       APIClient.postNewComment(this.comment, this.$route.params.id)
       this.comments = {}
-      this.comment = ''
-      this.fetchData()
+      setTimeout(() => this.fetchData(), 100)
     }
   }
 }

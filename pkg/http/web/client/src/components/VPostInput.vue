@@ -6,7 +6,7 @@
     <v-btn
       color="primary"
       @click.prevent="getFormValues()"
-      >POST</v-btn>
+    >POST</v-btn>
   </v-form>
 </template>
 

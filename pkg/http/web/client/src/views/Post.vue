@@ -69,4 +69,8 @@ export default {
 #go-back-link {
   text-decoration: none;
 }
+#edit-link {
+  text-decoration: none;
+  color: green;
+}
 </style>

@@ -1,4 +1,4 @@
-<template>
+<template name="component-name">
   <v-container>
     <v-row>
       <v-col
@@ -10,8 +10,8 @@
         cols="12"
         md="8"
       >
-        <h1>TDC Blog</h1>
-        <VFeed />
+        <h1>Deleted Post</h1>
+        <router-link to="/blog" id="go-back-link">Back to the feed</router-link>
       </v-col>
       <v-col
         cols="12"
@@ -23,11 +23,8 @@
 </template>
 
 <script>
-import VFeed from '@/components/VFeed.vue'
-
 export default {
   components: {
-    VFeed
   }
 }
 </script>

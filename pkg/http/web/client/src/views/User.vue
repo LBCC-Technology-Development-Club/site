@@ -10,7 +10,7 @@
         cols="12"
         md="6"
       >
-        <h1>{{ user.Name }}'s Posts</h1>
+        <h1>{{ user.name }}'s Posts</h1>
         <VUserFeed
           v-bind:user="user"
         />

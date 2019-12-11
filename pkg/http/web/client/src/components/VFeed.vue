@@ -25,7 +25,7 @@ export default {
       posts: []
     }
   },
-  mounted () {
+  created () {
     this.fetchData()
   },
   methods: {

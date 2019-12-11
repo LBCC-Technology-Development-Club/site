@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -15,7 +16,6 @@ func BlogRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Get("/post/{pID}", GetPost)
-	//router.Get("/post/user/{uID}", GetUserPosts)
 	router.Get("/post", GetAllPosts)
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post", CreatePost)
@@ -62,6 +62,22 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		post.Body = body
 		post.Timestamp = timestamp
 	}
+
+	query = `SELECT Post_Tags.tag FROM Post_Tags WHERE Post_Tags.pID = "` + strconv.Itoa(post.PostID) + `";`
+	tags := []string{}
+
+	selDB, err = db.Query(query)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	for selDB.Next() {
+		var tag string
+		err = selDB.Scan(&tag)
+		tags = append(tags, tag)
+	}
+
+	post.Tags = tags
 
 	db.Close()
 	render.JSON(w, r, post)
@@ -202,7 +218,7 @@ func GetUserPosts(w http.ResponseWriter, r *http.Request) {
 
 	uID := chi.URLParam(r, "uID")
 
-	selDB, err := db.Query("SELECT DISTINCT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID AND Post.uID = " + uID)
+	selDB, err := db.Query(`SELECT DISTINCT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID AND Post.uID = "` + uID + `" ORDER BY Post.pID DESC;`)
 	if err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
@@ -224,6 +240,7 @@ func GetUserPosts(w http.ResponseWriter, r *http.Request) {
 		post.Summary = summary
 		post.Body = body
 		post.Timestamp = timestamp
+
 		res = append(res, post)
 	}
 
@@ -240,18 +257,42 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
 	pID := chi.URLParam(r, "pID")
+
+	// Check that the post is not already deleted
+
+	commentQuery := "DELETE FROM Comment WHERE Comment.pID = " + pID + ";"
+	tagsQuery := "DELETE FROM Post_Tags WHERE Post_Tags.pID = " + pID + ";"
+	stickyQuery := "DELETE FROM Stickied_Posts WHERE Stickied_Posts.pID = " + pID + ";"
+	query := "DELETE FROM Post WHERE Post.pID = " + pID + ";"
+
 	response := make(map[string]string)
 
-	_, err := db.Query("DELETE FROM Post WHERE pID = " + pID)
+	_, err := db.Query(commentQuery)
 	if err != nil {
-		response["message"] = "Failed to delete post"
+		response["message"] = "Could not delete comments for this post"
 		log.Panicf("Logging error: %s\n", err.Error())
-	} else {
-		response["message"] = "Deleted post successfully"
 	}
 
-	db.Close()
+	_, err = db.Query(tagsQuery)
+	if err != nil {
+		response["message"] = "Could not delete tags for this post"
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	_, err = db.Query(stickyQuery)
+	if err != nil {
+		response["message"] = "Could not delete sticky post tag for this post"
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	_, err = db.Query(query)
+	if err != nil {
+		response["message"] = "Could not delete this post"
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
 	render.JSON(w, r, response)
+	db.Close()
 }
 
 // DeleteComment deletes a specific post from the database
@@ -283,6 +324,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
 
+	// CHANGE THIS TO BE CLIENT SIDE
 	post.Timestamp = time.Now().String()
 
 	query := `INSERT INTO Post(pID, timestamp, title, summary, body, uID) VALUES (NULL, "` + string(post.Timestamp) + `", "` + post.Title + `", "` + post.Summary + `", "` + post.Body + `", "` + string(post.UserID) + `")`
@@ -380,6 +422,15 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 
 /* Helpers */
 
+// Find returns if an object exists in a slice, and the index of the object
+func Find(slice []string, val string) (int, bool) {
+	for i, item := range slice {
+		if item == val {
+			return i, true
+		}
+	}
+	return -1, false
+}
 
 // SliceDiff returns the elements in a that are not in b
 func SliceDiff(a, b []string) []string {

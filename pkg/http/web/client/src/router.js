@@ -5,9 +5,11 @@ import About from './views/About.vue'
 import Blog from './views/Blog.vue'
 import Post from './views/Post.vue'
 import CreatePost from './views/CreatePost.vue'
+import EditPost from './views/EditPost.vue'
 import User from './views/User.vue'
 import SignUp from './views/SignUp.vue'
 import LogIn from './views/Login.vue'
+import Delete from './views/Delete.vue'
 
 Vue.use(Router)
 
@@ -58,6 +60,11 @@ export default new Router({
       path: '/blog/login',
       name: 'login',
       component: LogIn
+    },
+    {
+      path: '/blog/delete',
+      name: 'delete',
+      component: Delete
     }
   ]
 })

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URI = 'https://lbcctechdevclub.org'
+const BASE_URI = 'http://localhost:9090'
 const client = axios.create({
   baseURL: BASE_URI,
   jason: true
@@ -40,8 +40,11 @@ const APIClient = {
   async postNewComment (comment, pID) {
     this.perform('post', `/blog/comment/${pID}`, comment)
   },
-  async deleteComment(cID) {
+  async deleteComment (cID) {
     this.perform('delete', `/blog/comment/${cID}`)
+  },
+  async deletePost (pID) {
+    this.perform('delete', `/blog/post/${pID}`)
   },
 
   async perform (method, resource, data) {
