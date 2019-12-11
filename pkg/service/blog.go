@@ -19,7 +19,7 @@ func BlogRoutes() *chi.Mux {
 	router.Get("/post", GetAllPosts)
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post", CreatePost)
-	//router.Put("/post/{pID}", UpdatePost)
+	router.Get("/post/{pID}/tags", GetPostTags)
 
 	router.Get("/comment/{pID}", GetPostComments)
 	router.Post("/comment/{pID}", CreateComment)
@@ -92,7 +92,33 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 		post.Summary = summary
 		post.Body = body
 		post.Timestamp = timestamp
+
 		res = append(res, post)
+	}
+	db.Close()
+	render.JSON(w, r, res)
+}
+
+// GetPostTags gets all the tags associated with each post
+func GetPostTags(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	pID := chi.URLParam(r, "pID")
+
+	selDB, err := db.Query(`SELECT Post_Tags.tag FROM Post_Tags WHERE Post_Tags.pID = "` + pID + `";`)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	res := []string{}
+
+	for selDB.Next() {
+		var tag string
+		err = selDB.Scan(&tag)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+		res = append(res, tag)
 	}
 
 	db.Close()

@@ -27,6 +27,10 @@ const APIClient = {
     const postsData = await this.perform('get', `/blog/user/${uID}/posts`)
     return postsData
   },
+  async getPostTags (pID) {
+    const postTags = await this.perform('get', `/blog/post/${pID}/tags`)
+    return postTags
+  },
   async postNewPost (post) {
     this.perform('post', `/blog/post`, post)
   },
