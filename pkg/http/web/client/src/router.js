@@ -35,6 +35,11 @@ export default new Router({
       component: Post
     },
     {
+      path: '/blog/post/:id/edit',
+      name: 'editPost',
+      component: EditPost
+    },
+    {
       path: '/blog/create-post',
       name: 'create-post',
       component: CreatePost

@@ -34,6 +34,9 @@ const APIClient = {
   async postNewPost (post) {
     this.perform('post', `/blog/post`, post)
   },
+  async updatePost (pID, tags) {
+    this.perform('put', `/blog/post/${pID}`, tags)
+  },
   async postNewComment (comment, pID) {
     this.perform('post', `/blog/comment/${pID}`, comment)
   },

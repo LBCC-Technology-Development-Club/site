@@ -19,6 +19,11 @@
         <VPostContent
           v-bind:body="currentPost.body"
         />
+        <v-btn
+          text
+          color="primary"
+          :to="{ name: 'editPost', params: { id: currentPost.post_id }}"
+        >edit</v-btn>
         <VPostComments/>
       </v-col>
       <v-col

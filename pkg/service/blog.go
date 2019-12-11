@@ -20,6 +20,7 @@ func BlogRoutes() *chi.Mux {
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post", CreatePost)
 	router.Get("/post/{pID}/tags", GetPostTags)
+	router.Put("/post/{pID}", SetPostTags)
 
 	router.Get("/comment/{pID}", GetPostComments)
 	router.Post("/comment/{pID}", CreateComment)
@@ -300,6 +301,53 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, response)
 }
 
+// SetPostTags sets the tags on a specific post
+func SetPostTags(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	// verify the user
+
+	tags := Tags{}
+
+	pID := chi.URLParam(r, "pID")
+
+	err := json.NewDecoder(r.Body).Decode(&tags)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+	response := make(map[string]string)
+
+	newTags := SliceDiff(tags.NewTags, tags.OldTags)
+	deletedTags := SliceDiff(tags.OldTags, tags.NewTags)
+
+	for _, tag := range newTags {
+		query := `INSERT INTO Post_Tags(pID, tag) VALUES ("` + string(pID) + `", "` + tag + `");`
+
+		_, err = db.Query(query)
+		if err != nil {
+			response["message"] = "Failed to add tag"
+			log.Panicf("Logging error: %s\n", err.Error())
+		} else {
+			response["message"] = "Added tag successfully"
+		}
+	}
+
+	for _, tag := range deletedTags {
+		query := `DELETE FROM Post_Tags WHERE Post_Tags.pID = "` + string(pID) + `" AND Post_Tags.tag = "` + tag + `";`
+
+		_, err = db.Query(query)
+		if err != nil {
+			response["message"] = "Failed to add tag"
+			log.Panicf("Logging error: %s\n", err.Error())
+		} else {
+			response["message"] = "Added tag successfully"
+		}
+	}
+
+	db.Close()
+	render.JSON(w, r, response)
+}
+
 // CreateComment makes a new post
 func CreateComment(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
@@ -328,4 +376,22 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 
 	db.Close()
 	render.JSON(w, r, response)
+}
+
+/* Helpers */
+
+
+// SliceDiff returns the elements in a that are not in b
+func SliceDiff(a, b []string) []string {
+	mb := make(map[string]struct{}, len(b))
+	for _, x := range b {
+		mb[x] = struct{}{}
+	}
+	var diff []string
+	for _, x := range a {
+		if _, found := mb[x]; !found {
+			diff = append(diff, x)
+		}
+	}
+	return diff
 }
