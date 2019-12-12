@@ -13,6 +13,8 @@ import (
 	"github.com/go-chi/render"
 )
 
+// TODO: IMPLEMENT ALL USER AUTH CHECKING ON THE BACKEND AND THE FRONT END. TEST. DEPLOY. REPORT.
+
 // BlogRoutes defines the API endpoints for the /blog
 func BlogRoutes() *chi.Mux {
 	router := chi.NewRouter()
@@ -31,6 +33,7 @@ func BlogRoutes() *chi.Mux {
 
 	router.Get("/user/{uID}", GetUser)
 	router.Get("/user/{uID}/posts", GetUserPosts)
+	router.Post("/user/{uID}/makeadmin", MakeUserAdmin)
 
 	return router
 }
@@ -434,11 +437,8 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
 
-	// CHANGE THIS TO BE CLIENT SIDE
-	post.Timestamp = time.Now().String()
-
-	query := `INSERT INTO Post(pID, timestamp, title, summary, body, uID) VALUES (NULL, "` + string(post.Timestamp) + `", "` + post.Title + `", "` + post.Summary + `", "` + post.Body + `", "` + string(post.UserID) + `")`
-
+	query := `INSERT INTO Post(pID, timestamp, title, summary, body, uID) VALUES (NULL, "` + string(post.Timestamp) + `", "` + post.Title + `", "` + post.Summary + `", "` + post.Body + `", "` + strconv.Itoa(post.UserID) + `")`
+	print(query)
 	response := make(map[string]string)
 
 	_, err = db.Query(query)
@@ -530,7 +530,7 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 
 	comment.Timestamp = time.Now().String()
 
-	query := `INSERT INTO Comment(cID, timestamp, content, uID, pID) VALUES (NULL, "` + string(comment.Timestamp) + `", "` + comment.Content + `", "` + string(comment.UserID) + `", "` + pID + `")`
+	query := `INSERT INTO Comment(cID, timestamp, content, uID, pID) VALUES (NULL, "` + string(comment.Timestamp) + `", "` + comment.Content + `", "` + strconv.Itoa(comment.UserID) + `", "` + pID + `")`
 	log.Printf("%s\n", query)
 	response := make(map[string]string)
 
@@ -540,6 +540,27 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 		log.Panicf("Logging error: %s\n", err.Error())
 	} else {
 		response["message"] = "Created comment successfully"
+	}
+
+	db.Close()
+	render.JSON(w, r, response)
+}
+
+// MakeUserAdmin makes a user into an admin
+func MakeUserAdmin(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	uID := chi.URLParam(r, "uID")
+
+	query := "UPDATE User SET isAdmin=1 WHERE User.uID=" + uID
+	response := make(map[string]string)
+
+	_, err := db.Query(query)
+	if err != nil {
+		response["message"] = "Failed to make admin"
+		log.Panicf("Logging error: %s\n", err.Error())
+	} else {
+		response["message"] = "Made admin"
 	}
 
 	db.Close()

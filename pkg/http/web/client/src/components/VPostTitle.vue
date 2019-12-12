@@ -1,7 +1,10 @@
 <template>
 <div id="post-title">
   <h1>{{ title }}</h1>
-  <p>by {{ author }}, at {{ timestamp }}</p>
+  <span>
+    <router-link :to="{ name: 'user', params: { id: uID } }" id="go-back-link">by {{ author }}, </router-link>
+    <p>at {{ timestamp }}</p>
+  </span>
 </div>
 </template>
 
@@ -9,7 +12,7 @@
 
 export default {
   name: 'VPostTitle',
-  props: ['title', 'author', 'timestamp']
+  props: ['title', 'author', 'timestamp', 'uID']
 }
 </script>
 

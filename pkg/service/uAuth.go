@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
@@ -25,7 +26,7 @@ func uAuthInit() {
 func LoginRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
-	router.Get("/{email}/{password}", Login)
+	router.Post("/", Login)
 	router.Delete("/", Logout)
 	router.Post("/signup", Signup)
 
@@ -40,8 +41,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// Check db for a user with the correct email and password
 	db := Connect()
 
-	email := chi.URLParam(r, "email")
-	password := chi.URLParam(r, "password")
+	user := User{}
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	email := user.Email
+	password := user.Password
 
 	query := `SELECT User.saltedhash, User.uID, User.isAdmin FROM User WHERE User.email = "` + email + `";`
 
@@ -53,7 +61,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var hash string
 	var uID, admin int
 	for selDB.Next() {
-		err = selDB.Scan(&hash, &uID)
+		err = selDB.Scan(&hash, &uID, &admin)
 		if err != nil {
 			log.Panicf("Logging error: %s\n", err.Error())
 		}
@@ -89,6 +97,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if admin == 1 {
 		response["admin"] = "true"
 	}
+
+	response["user"] = strconv.Itoa(uID)
 	render.JSON(w, r, response)
 	db.Close()
 	// Return a JWT for continued authentication
@@ -150,11 +160,47 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		response["message"] = "Error signing up"
 		log.Panicf("Logging error: %s\n", err.Error())
-	} else {
-		response["message"] = "Successfuly signed up"
+		render.JSON(w, r, response)
+		db.Close()
+		return
 	}
 
-	// Provide the user with a JWT to log them in
+	response["message"] = "Successfuly signed up"
+
+	query = `SELECT User.uID, User.isAdmin FROM User WHERE User.email = "` + user.Email + `";`
+
+	selDB, err = db.Query(query)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	var uID, admin int
+	for selDB.Next() {
+		err = selDB.Scan(&uID, &admin)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"userID": uID,
+	})
+
+	tokenString, err := token.SignedString(hmacSecret)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	response["jwt"] = tokenString
+
+	if admin == 0 {
+		response["admin"] = "false"
+	}
+	if admin == 1 {
+		response["admin"] = "true"
+	}
+
+	response["user"] = string(uID)
 	render.JSON(w, r, response)
 	db.Close()
 }

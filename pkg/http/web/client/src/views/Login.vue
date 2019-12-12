@@ -10,7 +10,7 @@
         cols="12"
         md="6"
       >
-      <router-link to="/blog/signup" id="go-back-link">Need an account? Sign Up!</router-link>
+        <router-link to="/blog/signup" id="go-back-link">Need an account? Sign Up!</router-link>
         <v-form>
           <v-text-field
             v-model="email"
@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-
+import { mapGetters, mapActions } from 'vuex'
+import { store } from '@/store'
 import APIClient from '@/apiClient'
 
 export default {
@@ -74,28 +74,47 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'jwt'
+      'jwt',
+      'isAdmin',
+      'userID'
     ])
   },
   methods: {
     getFormValues () {
-      APIClient.logIn(this.email, this.password).then(responseJSON => {
+      this.user.email = this.email
+      this.user.password = this.password
+      APIClient.logIn(this.user).then(responseJSON => {
         if (responseJSON["message"] === "Invalid login") {
           this.invalid = true
         }
         if (responseJSON["message"] === "Logged in") {
-          // do the logged in stuff with a jwt
-          this.setJWT(responseJSON["jwt"])
-          if (responseJSON["admin"] === "true") this.setAdmin(true)
-          if (responseJSON["admin"] === "false") this.setAdmin(false)
+          const jwt = responseJSON["jwt"]
+          const userid = responseJSON["user"]
+          const admin = responseJSON["admin"]
+          document.cookie = "jwt=" + jwt + "; path=/"
+          document.cookie = "userid=" + String(userid) + "; path=/"
+          document.cookie = "admin=" + admin + "; path=/"
+          console.log(this.getCookie('admin'))
+          console.log(this.getCookie('jwt'))
+          console.log(this.getCookie('userid'))
           this.$router.push({ name: 'blog' })
         }
       })
     },
     ...mapActions([
-      `setJWT`,
-      `setAdmin`
-    ])
+      `setUser`
+    ]),
+    getCookie (name) {
+      const nameEQ = name + "="
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0)===' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
+      }
+      console.log('Bad cookie name')
+      return null
+    }
   }
 }
 </script>

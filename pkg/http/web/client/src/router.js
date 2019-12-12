@@ -11,6 +11,7 @@ import SignUp from './views/SignUp.vue'
 import LogIn from './views/Login.vue'
 import Delete from './views/Delete.vue'
 import Unverified from './views/Unverified.vue'
+import Signout from './views/Signout.vue'
 
 Vue.use(Router)
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/blog/delete',
       name: 'delete',
       component: Delete
+    },
+    {
+      path: '/blog/signout',
+      name: 'signout',
+      component: Signout
     }
   ]
 })

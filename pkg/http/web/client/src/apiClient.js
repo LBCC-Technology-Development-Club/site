@@ -54,9 +54,12 @@ const APIClient = {
     const response = await this.perform('post', `/login/signup`, JSON.stringify(user))
     return response
   },
-  async logIn (email, password) {
-    const response = await this.perform('get', `/login/${email}/${password}`)
+  async logIn (user) {
+    const response = await this.perform('post', `/login`, JSON.stringify(user))
     return response
+  },
+  async makeUserAdmin (uID) {
+    this.perform('post', `/blog/user/${uID}/makeadmin`)
   },
 
   async perform (method, resource, data) {

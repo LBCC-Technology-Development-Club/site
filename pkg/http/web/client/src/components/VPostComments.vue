@@ -1,7 +1,7 @@
 <template>
 <div id="post-comments">
   <h2>Comments</h2>
-  <div id="post-title">
+  <div v-if="isLoggedIn">
     <v-row>
       <v-col cols="12" sm="8">
         <v-text-field label="Comment" single-line clearable v-model="content"></v-text-field>
@@ -36,7 +36,7 @@ export default {
     return {
       comments: {},
       comment: {
-        uID: 0,
+        user_id: 0,
         pID: 0,
         content: '',
         timestamp: ''
@@ -47,6 +47,12 @@ export default {
   mounted () {
     this.fetchData()
   },
+  computed: {
+    isLoggedIn () {
+      if (this.getCookie('jwt') === '') return false
+      return true
+    }
+  },
   methods: {
     fetchData () {
       APIClient.getComments(this.$route.params.id).then(responseJSON => {
@@ -55,11 +61,21 @@ export default {
     },
     getFormValues () {
       this.comment.content = this.content
-      this.comment.uID = 0
+      this.comment.user_id = parseInt(this.getCookie('userid'))
 
       APIClient.postNewComment(this.comment, this.$route.params.id)
       this.comments = {}
       setTimeout(() => this.fetchData(), 100)
+    },
+    getCookie (name) {
+      const nameEQ = name + "="
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0)===' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
+      }
+      return null
     }
   }
 }

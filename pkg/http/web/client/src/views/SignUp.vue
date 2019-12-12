@@ -96,8 +96,13 @@ export default {
           this.alreadyExist = true
         }
         if (responseJSON["message"] === "Successfuly signed up") {
-          // We should get a jwt now
-          
+          const jwt = responseJSON["jwt"]
+          const user = responseJSON["user"]
+          const admin = responseJSON["admin"]
+          document.cookie = "jwt=" + jwt + "; path=/"
+          document.cookie = "user=" + user + "; path=/"
+          document.cookie = "admin=" + admin + "; path=/"
+          this.$router.push({ name: 'blog' })
         }
       })
     }
