@@ -5,9 +5,13 @@ import About from './views/About.vue'
 import Blog from './views/Blog.vue'
 import Post from './views/Post.vue'
 import CreatePost from './views/CreatePost.vue'
+import EditPost from './views/EditPost.vue'
 import User from './views/User.vue'
 import SignUp from './views/SignUp.vue'
 import LogIn from './views/Login.vue'
+import Delete from './views/Delete.vue'
+import Unverified from './views/Unverified.vue'
+import Signout from './views/Signout.vue'
 
 Vue.use(Router)
 
@@ -30,9 +34,19 @@ export default new Router({
       component: Blog
     },
     {
+      path: '/blog/unverified',
+      name: 'unverified',
+      component: Unverified
+    },
+    {
       path: '/blog/post/:id',
       name: 'post',
       component: Post
+    },
+    {
+      path: '/blog/post/:id/edit',
+      name: 'editPost',
+      component: EditPost
     },
     {
       path: '/blog/create-post',
@@ -53,6 +67,16 @@ export default new Router({
       path: '/blog/login',
       name: 'login',
       component: LogIn
+    },
+    {
+      path: '/blog/delete',
+      name: 'delete',
+      component: Delete
+    },
+    {
+      path: '/blog/signout',
+      name: 'signout',
+      component: Signout
     }
   ]
 })

@@ -25,20 +25,22 @@
           ></v-text-field>
           <v-text-field
             v-model="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show1 ? 'text' : 'password'"
-              name="input-10-1"
-              label="Password"
-              @click:append="show1 = !show1"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show1 ? 'text' : 'password'"
+            :rules="passwordRules"
+            name="input-10-1"
+            label="Password"
+            @click:append="show1 = !show1"
           ></v-text-field>
           <v-btn
-            :disabled="!valid"
             color="success"
             class="mr-4"
+            @click.prevent="getFormValues()"
           >
             SignUp
           </v-btn>
         </v-form>
+        <p v-if="alreadyExist">A user with this email already exists</p>
       </v-col>
       <v-col
         cols="12"
@@ -50,15 +52,16 @@
 </template>
 
 <script>
-// import APIClient from '@/apiClient'
+import APIClient from '@/apiClient'
 
 export default {
   components: {
   },
   data () {
     return {
-      user: {},
-      valid: true,
+      user: {
+        
+      },
       name: '',
       nameRules: [
         v => !!v || 'Name is required',
@@ -70,10 +73,39 @@ export default {
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
       ],
       password: '',
-      show1: false
+      passwordRules: [
+        v => !!v || 'Password is required'
+      ],
+      show1: false,
+      alreadyExist: false
     }
   },
   methods: {
+    getFormValues () {
+      const user = {
+        uID: '',
+        name: this.name,
+        email: this.email,
+        isAdmin: false,
+        hash: '',
+        password: this.password,
+        role: 'member'
+      }
+      APIClient.signUp(user).then(responseJSON => {
+        if (responseJSON["message"] === "A user with this email already exists") {
+          this.alreadyExist = true
+        }
+        if (responseJSON["message"] === "Successfuly signed up") {
+          const jwt = responseJSON["jwt"]
+          const user = responseJSON["user"]
+          const admin = responseJSON["admin"]
+          document.cookie = "jwt=" + jwt + "; path=/"
+          document.cookie = "user=" + user + "; path=/"
+          document.cookie = "admin=" + admin + "; path=/"
+          this.$router.push({ name: 'blog' })
+        }
+      })
+    }
   }
 }
 </script>

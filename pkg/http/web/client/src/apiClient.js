@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URI = 'https://lbcctechdevclub.org'
+const BASE_URI = 'http://localhost:9090'
 const client = axios.create({
   baseURL: BASE_URI,
   jason: true
@@ -16,7 +16,11 @@ const APIClient = {
     return commentsData
   },
   async getAllPosts () {
-    const postsData = await this.perform('get', `/blog/post`)
+    const postsData = await this.perform('get', `/blog/post/verified`)
+    return postsData
+  },
+  async getAllUnverifiedPosts () {
+    const postsData = await this.perform('get', `/blog/post/unverified`)
     return postsData
   },
   async getUser (uID) {
@@ -27,14 +31,35 @@ const APIClient = {
     const postsData = await this.perform('get', `/blog/user/${uID}/posts`)
     return postsData
   },
+  async getPostTags (pID) {
+    const postTags = await this.perform('get', `/blog/post/${pID}/tags`)
+    return postTags
+  },
   async postNewPost (post) {
     this.perform('post', `/blog/post`, post)
+  },
+  async updatePost (pID, tags) {
+    this.perform('put', `/blog/post/${pID}`, tags)
   },
   async postNewComment (comment, pID) {
     this.perform('post', `/blog/comment/${pID}`, comment)
   },
-  async deleteComment(cID) {
+  async deleteComment (cID) {
     this.perform('delete', `/blog/comment/${cID}`)
+  },
+  async deletePost (pID) {
+    this.perform('delete', `/blog/post/${pID}`)
+  },
+  async signUp (user) {
+    const response = await this.perform('post', `/login/signup`, JSON.stringify(user))
+    return response
+  },
+  async logIn (user) {
+    const response = await this.perform('post', `/login`, JSON.stringify(user))
+    return response
+  },
+  async makeUserAdmin (uID) {
+    this.perform('post', `/blog/user/${uID}/makeadmin`)
   },
 
   async perform (method, resource, data) {

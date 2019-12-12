@@ -18,7 +18,7 @@ import VPostCard from '@/components/VPostCard.vue'
 import APIClient from '@/apiClient'
 
 export default {
-  name: 'Feed',
+  name: 'UnverifiedFeed',
   components: { VPostCard },
   data () {
     return {
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     fetchData () {
-      APIClient.getAllPosts().then(responseJSON => {
+      APIClient.getAllUnverifiedPosts().then(responseJSON => {
         this.posts = responseJSON
       })
     }

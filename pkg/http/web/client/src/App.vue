@@ -10,8 +10,11 @@
 <script>
 import VNavBar from '@/components/VNavBar.vue'
 
+import { store } from '@/store'
+
 export default {
   name: 'App',
+  store,
   components: {
     VNavBar
   },
