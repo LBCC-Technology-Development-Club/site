@@ -2,11 +2,13 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 )
@@ -315,6 +317,50 @@ func GetUserPosts(w http.ResponseWriter, r *http.Request) {
 /*
 Below this line requires user authentication
 */
+
+// ParseToken determines if the token is valid, and returns if the user is admin (uID [-1 if invalid], admin)
+func ParseToken(tokenString string) (int, bool) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Method.(*jwt.SigningMethodHMAC)
+		if !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return hmacSecret, nil
+	})
+	if err != nil {
+		log.Panicf("Logging Error: %s\n", err.Error())
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if ok && token.Valid {
+		db := Connect()
+		query := "SELECT User.isAdmin FROM User WHERE User.uID = " + claims["userID"].(string)
+		selDB, err := db.Query(query)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+		var admin int
+		for selDB.Next() {
+			err = selDB.Scan(&admin)
+			if err != nil {
+				log.Panicf("Logging errog: %s\n", err.Error())
+			}
+		}
+		if admin == 0 {
+			db.Close()
+			return claims["userID"].(int), false
+		}
+		if admin == 1 {
+			db.Close()
+			return claims["userID"].(int), true
+		}
+	} else {
+		return -1, false
+	}
+	return -1, false
+}
 
 // DeletePost deletes a specific post from the database
 func DeletePost(w http.ResponseWriter, r *http.Request) {

@@ -50,6 +50,14 @@ const APIClient = {
   async deletePost (pID) {
     this.perform('delete', `/blog/post/${pID}`)
   },
+  async signUp (user) {
+    const response = await this.perform('post', `/login/signup`, JSON.stringify(user))
+    return response
+  },
+  async logIn (email, password) {
+    const response = await this.perform('get', `/login/${email}/${password}`)
+    return response
+  },
 
   async perform (method, resource, data) {
     // Get access token here
