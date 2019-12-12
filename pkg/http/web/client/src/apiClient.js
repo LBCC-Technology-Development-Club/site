@@ -16,7 +16,11 @@ const APIClient = {
     return commentsData
   },
   async getAllPosts () {
-    const postsData = await this.perform('get', `/blog/post`)
+    const postsData = await this.perform('get', `/blog/post/verified`)
+    return postsData
+  },
+  async getAllUnverifiedPosts () {
+    const postsData = await this.perform('get', `/blog/post/unverified`)
     return postsData
   },
   async getUser (uID) {

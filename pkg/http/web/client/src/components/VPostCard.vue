@@ -1,6 +1,7 @@
 <template>
 <div id="postcard">
-  <v-card v-if="inArray('verified', tags)">
+  <v-card>
+    <span v-if="inArray('sticky', tags)"><v-icon>mdi-pin</v-icon></span>
     <span v-if="inArray('update', tags)"><v-icon color="primary">mdi-update</v-icon></span>
     <span v-if="inArray('announcement', tags)"><v-icon color="red">mdi-bullhorn</v-icon></span>
     <br>

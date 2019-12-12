@@ -75,7 +75,7 @@ export default {
         this.oldTags = this.currentPost.tags
       })
 
-      this.tags = ['announcement', 'update', 'verified']
+      this.tags = ['announcement', 'update', 'verified', 'sticky']
     },
     getFormValues () {
       APIClient.updatePost(this.$route.params.id, { oldTags: this.oldTags, newTags: this.currentPost.tags })

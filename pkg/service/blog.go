@@ -16,7 +16,8 @@ func BlogRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
 	router.Get("/post/{pID}", GetPost)
-	router.Get("/post", GetAllPosts)
+	router.Get("/post/verified", GetAllPosts)
+	router.Get("/post/unverified", GetAllUnverifiedPosts)
 	router.Delete("/post/{pID}", DeletePost)
 	router.Post("/post", CreatePost)
 	router.Get("/post/{pID}/tags", GetPostTags)
@@ -87,7 +88,10 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
-	selDB, err := db.Query("SELECT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID ORDER BY Post.pID DESC")
+	stickyPostQ := "SELECT Post.*, User.Name FROM Post, User, Stickied_Posts WHERE Post.pID = Stickied_Posts.pID AND Post.uID = User.uID ORDER BY Post.pID DESC;"
+	notStickyPostQ := `SELECT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID AND Post.pID IN (SELECT Post_Tags.pID FROM Post_Tags WHERE Post_Tags.tag = "verified" AND Post_Tags.pID NOT IN (SELECT * FROM Stickied_Posts)) ORDER BY Post.pID DESC;`
+
+	selDB, err := db.Query(stickyPostQ)
 	if err != nil {
 		log.Panicf("Logging error: %s\n", err.Error())
 	}
@@ -112,6 +116,66 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 
 		res = append(res, post)
 	}
+
+	selDB, err = db.Query(notStickyPostQ)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	for selDB.Next() {
+		var uID, pID int
+		var title, summary, body, timestamp, author string
+		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID, &author)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+		post.UserID = uID
+		post.PostID = pID
+		post.Author = author
+		post.Title = title
+		post.Summary = summary
+		post.Body = body
+		post.Timestamp = timestamp
+
+		res = append(res, post)
+	}
+
+	db.Close()
+	render.JSON(w, r, res)
+}
+
+// GetAllUnverifiedPosts renders all the not yet verified posts
+func GetAllUnverifiedPosts(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	notStickyPostQ := `SELECT Post.*, User.Name FROM Post, User WHERE Post.uID = User.uID AND Post.pID NOT IN (SELECT Post_Tags.pID FROM Post_Tags WHERE Post_Tags.tag = "verified") ORDER BY Post.pID DESC;`
+
+	post := Post{}
+	res := []Post{}
+
+	selDB, err := db.Query(notStickyPostQ)
+	if err != nil {
+		log.Panicf("Logging error: %s\n", err.Error())
+	}
+
+	for selDB.Next() {
+		var uID, pID int
+		var title, summary, body, timestamp, author string
+		err = selDB.Scan(&pID, &timestamp, &title, &summary, &body, &uID, &author)
+		if err != nil {
+			log.Panicf("Logging error: %s\n", err.Error())
+		}
+		post.UserID = uID
+		post.PostID = pID
+		post.Author = author
+		post.Title = title
+		post.Summary = summary
+		post.Body = body
+		post.Timestamp = timestamp
+
+		res = append(res, post)
+	}
+
 	db.Close()
 	render.JSON(w, r, res)
 }
@@ -363,6 +427,14 @@ func SetPostTags(w http.ResponseWriter, r *http.Request) {
 	deletedTags := SliceDiff(tags.OldTags, tags.NewTags)
 
 	for _, tag := range newTags {
+		if tag == "sticky" {
+			_, err = db.Query(`INSERT INTO Stickied_Posts(pID) VALUES ("` + string(pID) + `");`)
+			if err != nil {
+				response["message"] = "Failed to sticky post"
+				log.Panicf("Logging error: %s\n", err.Error())
+				break
+			}
+		}
 		query := `INSERT INTO Post_Tags(pID, tag) VALUES ("` + string(pID) + `", "` + tag + `");`
 
 		_, err = db.Query(query)
@@ -375,6 +447,14 @@ func SetPostTags(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, tag := range deletedTags {
+		if tag == "sticky" {
+			_, err = db.Query(`DELETE FROM Stickied_Posts WHERE Stickied_Posts.pID = "` + string(pID) + `";`)
+			if err != nil {
+				response["message"] = "Failed to un-sticky post"
+				log.Panicf("Logging error: %s\n", err.Error())
+				break
+			}
+		}
 		query := `DELETE FROM Post_Tags WHERE Post_Tags.pID = "` + string(pID) + `" AND Post_Tags.tag = "` + tag + `";`
 
 		_, err = db.Query(query)

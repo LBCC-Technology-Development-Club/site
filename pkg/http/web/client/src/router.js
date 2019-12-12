@@ -10,6 +10,7 @@ import User from './views/User.vue'
 import SignUp from './views/SignUp.vue'
 import LogIn from './views/Login.vue'
 import Delete from './views/Delete.vue'
+import Unverified from './views/Unverified.vue'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/blog',
       name: 'blog',
       component: Blog
+    },
+    {
+      path: '/blog/unverified',
+      name: 'unverified',
+      component: Unverified
     },
     {
       path: '/blog/post/:id',
