@@ -12,6 +12,7 @@ import LogIn from './views/Login.vue'
 import Delete from './views/Delete.vue'
 import Unverified from './views/Unverified.vue'
 import Signout from './views/Signout.vue'
+import AboutBlog from './views/AboutBlog.vue'
 
 Vue.use(Router)
 
@@ -77,6 +78,11 @@ export default new Router({
       path: '/blog/signout',
       name: 'signout',
       component: Signout
+    },
+    {
+      path: '/blog/about',
+      name: 'about',
+      component: AboutBlog
     }
   ]
 })
