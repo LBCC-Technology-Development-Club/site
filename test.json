@@ -1,0 +1,9 @@
+{
+    "uID":"",
+    "name":"Tester",
+    "email":"test@test.com",
+    "isAdmin":false,
+    "hash":"",
+    "password":"password",
+    "role":"member"
+}

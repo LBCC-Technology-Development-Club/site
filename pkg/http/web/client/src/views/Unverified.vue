@@ -11,11 +11,7 @@
         md="8"
       >
         <h1>TDC Blog</h1>
-        <span>
-          <v-btn v-if="isLoggedIn" color="primary" text @click.prevent="signOut()">sign out</v-btn>
-          <v-btn v-if="isAdmin" color="primary" text :to="{ name: 'unverified'}">unverified posts</v-btn>
-        </span>
-        <VFeed />
+        <VUnverifiedFeed />
       </v-col>
       <v-col
         cols="12"
@@ -27,29 +23,21 @@
 </template>
 
 <script>
-import VFeed from '@/components/VFeed.vue'
+import VUnverifiedFeed from '@/components/VUnverifiedFeed.vue'
 
 export default {
   components: {
-    VFeed
+    VUnverifiedFeed
   },
-  computed: {
-    isLoggedIn () {
-      if (this.getCookie('jwt') === '') return false
-      return true
-    },
-    isAdmin() {
-      if (this.getCookie('admin') === 'true') return true
-      return false
+  mounted () {
+    if (this.getCookie('jwt') === '') {
+      this.$router.push({ name: 'blog' })
+    }
+    if (this.getCookie('admin') === 'false') {
+      this.$router.push({ name: 'blog' })
     }
   },
   methods: {
-    signOut () {
-      document.cookie = "jwt=; path=/"
-      document.cookie = "user=; path=/"
-      document.cookie = "admin=; path=/"
-      this.$router.push({ name: 'signout' })
-    },
     getCookie (name) {
       const nameEQ = name + "="
       var ca = document.cookie.split(';')
