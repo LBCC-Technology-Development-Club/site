@@ -3,18 +3,19 @@
     <v-row>
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
       </v-col>
       <v-col
         cols="12"
-        md="8"
+        md="6"
       >
-        <VBlogPlaceHolder />
+        <h1>Create New Post</h1>
+        <VPostInput />
       </v-col>
       <v-col
         cols="12"
-        md="2"
+        md="3"
       >
       </v-col>
     </v-row>
@@ -22,11 +23,10 @@
 </template>
 
 <script>
-import VBlogPlaceHolder from '@/components/VBlogPlaceHolder.vue'
-
+import VPostInput from '@/components/VPostInput.vue'
 export default {
   components: {
-    VBlogPlaceHolder
+    VPostInput
   }
 }
 </script>
