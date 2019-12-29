@@ -1,45 +1,50 @@
 <template>
   <v-container>
     <h1>Our Current Project</h1>
-    <v-card
-      elevation="4"
+    <br>
+    <h3>Low Cost Biomimetic Prosthesis</h3>
+    <v-carousel
+      cycle
+      hide-delimiter-background
+      show-arrows-on-hover
     >
-      <v-img
-        class="white--text"
-        alt="Image of a mechanical ankle."
-        src="@/assets/img/ankleRender.png"
+      <v-carousel-item
+        v-for="(image, i) in images"
+        :key="i"
+        :src="image.src"
       >
-        <v-card-title
-          class="align-end fill-height"
-        >Prosthetic Leg</v-card-title>
-      </v-img>
-      <v-card-text>A design prototype of the actuating ankle</v-card-text>
-    </v-card>
+      </v-carousel-item>
+    </v-carousel>
     <br>
-    <p>Our current project is to design a low cost, but highly functional, prosthetic for below the knee amputees. By combining an innovative biomimetic design with advanced electronics, we hope to provide a massive increase in mobility for those in need.</p>
+    <p>Our current project is to design a low cost, but highly functional, prosthesis for below the knee amputees. By combining an innovative biomimetic design with advanced electronics, we hope to provide a massive increase in mobility for those in need.</p>
     <br>
-    <h2>The Brains</h2>
-    <v-img
-      class="white--text"
-      alt="Image of a microcontroller."
-      src="@/assets/img/teensy35.jpg"
+    <h3>For updates on our progress, visit our blog!</h3>
+    <v-row
+      align="center"
+      justify="center"
     >
-    </v-img>
-    <br>
-    <p>This is one of our microcontrollers, these are the brains behind the prosthetic. By melding our mechanical design with cutting edge software and electronics, we are able to squeeze the most performance out of the prosthetic.</p>
-    <hr>
-    <br>
-    <p>For updates on our progress, visit our blog!</p>
-    <v-btn
-      text
-      color="primary"
-      to="/blog"
-    >Updates</v-btn>
+      <v-btn
+        text
+        large
+        color="primary"
+        to="/blog"
+      >Updates</v-btn>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'CurrentProject'
+  name: 'CurrentProject',
+  data () {
+    return {
+      images: [
+        { src: 'img/prototype-design-0_opt.png' },
+        { src: 'img/prototype-design-1_opt.png' },
+        { src: 'img/prototype-design-2_opt.png' },
+        { src: 'img/prototype-design-3_opt.png' }
+      ]
+    }
+  }
 }
 </script>
